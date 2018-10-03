@@ -9,7 +9,7 @@ public class StudentCalculations
 
     public static double calculateBMI(Student student)
     {
-        //returns Weight * Height^2
+        //returns Weight / Height^2
         return student.getWeight() / ( student.getHeight() * student.getWeight() );
     }
 
