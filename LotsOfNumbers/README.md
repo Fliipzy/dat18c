@@ -13,6 +13,7 @@ value is included or not, it must answer correct.
 
 
 **Exercise 3**
+
 This Number class must of course include :
 - equals()
 - toString()
