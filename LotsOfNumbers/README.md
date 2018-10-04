@@ -3,8 +3,8 @@
 **_Exercise 1_**
 
 Design (remember this) and implement :
-- Design a class with main(){}
-- Design a class to handle numbers from -∞ to ∞
+- a class with main(){}
+- a class to handle numbers from -∞ to ∞
 
 **_Exercise 2_**
 
