@@ -19,9 +19,10 @@ This Number class must of course include :
 - toString()
 
 How do you decide, when 2 objects from this Number
-class is equal ?
+class is equal?
 
 **Exercise 4**
-d
+- Set up a couple of test routines, that is try to catch
+errors in your code.
 
 **Exercise 5**
