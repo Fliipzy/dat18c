@@ -27,7 +27,7 @@ class is equal?
 Set up a couple of test routines, that is try to catch
 errors in your code.
 
-**_Exercise 5_**
+**_Exercise 5 (Extra ONLY if 1 – 4 is solved)_**
 
 Rethink Exercise 1 – 4 so you can include objects, that
 only allows whole numbers (i.e. integers (int))
