@@ -17,7 +17,10 @@ value is included or not, it must answer correct.
 This Number class must of course include :
 - equals()
 - toString()
+How do you decide, when 2 objects from this Number
+class is equal ?
 
 **Exercise 4**
+
 
 **Exercise 5**
