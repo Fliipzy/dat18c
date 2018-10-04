@@ -1,10 +1,10 @@
 # Lots of Numbers
 
-**Exercise 1**
+**_Exercise 1_**
 - Design a class with main(){}
 - Design a class to handle numbers from -∞ to ∞
 
-**Exercise 2**
+**_Exercise 2_**
 
 An object from this Number class must “contain” all or
 a subset of this numbers. F.ex. could an object “contain”
