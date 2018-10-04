@@ -1,4 +1,4 @@
-# Lots of Numbers assignment
+# Lots of Numbers
 
 Exercise 1
 
