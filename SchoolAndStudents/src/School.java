@@ -13,7 +13,7 @@ public class School
 
         Student[] students = new Student[4]; 
         //When we initialize the array we have to put in a number in the end brackets to tell the program how many students it needs to make space for. "..new Student[4];".
-        //That number is NOT zero indexed and make space for 4 Students.
+        //That number is NOT zero indexed and will make space for 4 Students.
 
 
         //Now the array needs to be "populated" with data, in our case the data is of type Student
