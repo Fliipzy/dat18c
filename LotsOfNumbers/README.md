@@ -22,6 +22,6 @@ How do you decide, when 2 objects from this Number
 class is equal ?
 
 **Exercise 4**
-
+d
 
 **Exercise 5**
