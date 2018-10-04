@@ -13,7 +13,7 @@ all numbers in an interval [0.0 ; 1.2].
 value is included or not, it must answer correct.
 
 
-**Exercise 3**
+**_Exercise 3_**
 
 This Number class must of course include :
 - equals()
@@ -22,12 +22,12 @@ This Number class must of course include :
 How do you decide, when 2 objects from this Number
 class is equal?
 
-**Exercise 4**
+**_Exercise 4_**
 
 Set up a couple of test routines, that is try to catch
 errors in your code.
 
-**Exercise 5**
+**_Exercise 5_**
 
 Rethink Exercise 1 – 4 so you can include objects, that
 only allows whole numbers (i.e. integers (int))
