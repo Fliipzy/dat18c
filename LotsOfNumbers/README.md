@@ -1,6 +1,8 @@
 # Lots of Numbers
 
 Exercise 1
+- Design a class with main(){}
+- Design a class to handle numbers from -∞ to ∞
 
 Exercise 2
 
