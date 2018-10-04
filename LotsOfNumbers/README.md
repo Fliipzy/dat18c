@@ -1,10 +1,10 @@
 # Lots of Numbers
 
-Exercise 1
+**Exercise 1**
 - Design a class with main(){}
 - Design a class to handle numbers from -∞ to ∞
 
-Exercise 2
+**Exercise 2**
 - An object from this Number class must “contain” all or
 a subset of this numbers. F.ex. could an object “contain”
 all numbers in an interval [0.0 ; 1.2].
@@ -12,8 +12,8 @@ all numbers in an interval [0.0 ; 1.2].
 value is included or not, it must answer correct.
 
 
-Exercise 3
+**Exercise 3**
 
-Exercise 4
+**Exercise 4**
 
-Exercise 5
+**Exercise 5**
