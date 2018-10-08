@@ -1,5 +1,7 @@
 package Chapter7_Arrays;
 
+import java.util.HashMap;
+
 public class Program 
 {
     public static void main(String[] args) 
@@ -27,7 +29,9 @@ public class Program
         System.out.println(isSorted(numbers5));
 
         //Exercise 5 test
+        int[] numbers6 = new int[] { 27, 15, 15, 11, 27 };
         
+        System.out.println(mode(numbers6));
 
     }
 
@@ -119,5 +123,40 @@ public class Program
         }
         return true;
     }
+
+    //Exercise 5
+    public static int mode(int[] numbers)
+    {
+        HashMap<Integer, Integer> occurrences = new HashMap<Integer, Integer>();
+
+        for (int i = 0; i < numbers.length; i++) 
+        {
+            if (occurrences.containsKey(numbers[i])) 
+            {
+                int oldValue = occurrences.get(numbers[i]);
+                occurrences.replace(numbers[i], oldValue, oldValue + 1);
+            } 
+            else 
+            {
+                occurrences.put(numbers[i], 0);
+            }
+        }
+
+        int mostOccurencesIndex = 0;
+
+        for (int i = 0; i < numbers.length; i++) 
+        {
+            if (occurrences.get(numbers[mostOccurencesIndex]) <= occurrences.get(numbers[i])) 
+            {
+                if (numbers[mostOccurencesIndex] > numbers[i]) 
+                {
+                    mostOccurencesIndex = i;
+                }
+            }
+        }
+
+        return numbers[mostOccurencesIndex];
+    }
+
 
 }
