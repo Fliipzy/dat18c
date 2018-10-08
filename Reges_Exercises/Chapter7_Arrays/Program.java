@@ -4,11 +4,11 @@ public class Program
 {
     public static void main(String[] args) 
     {
-        int[] numbers1 = new int[] {74, 85, 102, 99, 101, 85, 56};
+        int[] numbers1 = new int[] { 74, 85, 102, 99, 101, 85, 56};
 
         System.out.println(lastIndexOf(numbers1, 85));
 
-        int[] numbers2 = new int[] {36, 12 ,25 ,19 ,46 ,31 ,22 };
+        int[] numbers2 = new int[] { 36, 12 ,25 ,19 ,46 ,31 ,22 };
 
         System.out.println(range(numbers2));
     }
