@@ -1,3 +1,3 @@
 # Reges Exercises (Chapter 7 Arrays)
-page 584
+page 584 :+1:
 
