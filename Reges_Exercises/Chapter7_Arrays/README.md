@@ -1,4 +1,4 @@
-# Reges Exercises
-## Arrays Exercises
+# Reges Exercises (Chapter 7 Arrays)
+
 
 page 584
