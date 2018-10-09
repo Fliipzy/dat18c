@@ -44,6 +44,18 @@ public class Program
         int k = 2;
 
         System.out.println(kthLargest(numbers8, k));
+
+        //Exercise 8 test
+        int[] numbers9 = new int[] { 5, 2, 4, 17, 55, 4, 3, 26, 18, 2, 17};
+        int[] numbers10 = new int[] { 42, 37, 1, 97, 1, 2, 7, 42, 3, 25, 89, 15, 10, 29, 27 };
+
+        System.out.println(median(numbers9));
+        System.out.println(median(numbers10));
+
+        //Exercise 9 test
+        int[] numbers11 = new int[] {1,3,6,7,12};
+
+        System.out.println(minGap(numbers11));
     }
 
     //Exercise 1
@@ -195,6 +207,8 @@ public class Program
         return Math.sqrt(sumOfSquares / (numbers.length-1));
     } 
 
+    //Exercise 7
+
     public static int kthLargest(int[] numbers, int k)
     {
         Arrays.sort(numbers);
@@ -214,5 +228,34 @@ public class Program
             
         }
         return 0;
+    }
+
+    //Exercise 8
+
+    public static int median(int[] numbers)
+    {
+        Arrays.sort(numbers);
+
+        return numbers[numbers.length/2];
+    }
+
+    //Exercise 9
+
+    public static int minGap(int[] numbers)
+    {
+        if (numbers.length < 2) { return 0; }
+
+        Arrays.sort(numbers);
+
+        int minGap = numbers[1] - numbers[0];
+
+        for (int i = 0; i < numbers.length-1; i++) 
+        {
+            if (minGap > (numbers[i+1]-numbers[i])) 
+            {
+                minGap = numbers[i+1]-numbers[i];
+            }    
+        }
+        return minGap;
     }
 }
