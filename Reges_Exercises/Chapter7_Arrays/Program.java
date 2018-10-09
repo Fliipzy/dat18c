@@ -1,5 +1,6 @@
 package Chapter7_Arrays;
 
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class Program 
@@ -32,6 +33,11 @@ public class Program
         int[] numbers6 = new int[] { 27, 15, 15, 11, 27 };
         
         System.out.println(mode(numbers6));
+
+        //Exercise 6 test
+        int[] numbers7 = new int[] { 1, -2, 4, -4, 9, -6, 16, -8, 25, -10 };
+
+        System.out.println(stdev(numbers7));
 
     }
 
@@ -91,6 +97,7 @@ public class Program
             }
         }
         return numbers[biggestIndex];
+        
     }
 
 
@@ -107,7 +114,8 @@ public class Program
                 count++;    
             }
         }  
-        return count;         
+        return count;   
+        
     }
 
     //Exercise 4
@@ -125,6 +133,7 @@ public class Program
     }
 
     //Exercise 5
+
     public static int mode(int[] numbers)
     {
         HashMap<Integer, Integer> occurrences = new HashMap<Integer, Integer>();
@@ -158,5 +167,27 @@ public class Program
         return numbers[mostOccurencesIndex];
     }
 
+    //Exercise 6
+
+    public static double stdev(int[] numbers)
+    {
+        int sum = 0;
+
+        for (int i = 0; i < numbers.length; i++) 
+        {
+            sum += numbers[i];
+        }
+
+        double average = (double)sum / numbers.length;
+
+        double sumOfSquares = 0;
+
+        for (int i = 0; i < numbers.length; i++) 
+        {
+            sumOfSquares += Math.pow(numbers[i] - average, 2);
+        }
+
+        return Math.sqrt(sumOfSquares / (numbers.length-1));
+    } 
 
 }
