@@ -39,6 +39,11 @@ public class Program
 
         System.out.println(stdev(numbers7));
 
+        //Exercise 7 test
+        int[] numbers8 = new int[] { 74, 85, 102, 99, 101, 56, 84 };
+        int k = 2;
+
+        System.out.println(kthLargest(numbers8, k));
     }
 
     //Exercise 1
@@ -190,4 +195,24 @@ public class Program
         return Math.sqrt(sumOfSquares / (numbers.length-1));
     } 
 
+    public static int kthLargest(int[] numbers, int k)
+    {
+        Arrays.sort(numbers);
+        int kCount = 0;
+
+        for (int i = numbers.length-1; i >= 0; i--) 
+        {
+            if (kCount == k) 
+            {
+                return numbers[i];    
+            }
+
+            if (numbers[i] != numbers[i-1]) 
+            {
+                kCount++;
+            }
+            
+        }
+        return 0;
+    }
 }
