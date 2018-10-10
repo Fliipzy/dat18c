@@ -1,4 +1,4 @@
-# 0 – 100+ a dice game 
+# 0 – 100+ a dice game  :game_die: :game_die:
 
 ## Exercise : 
 Design and implement a program, which can play the 0 – 100+ dice game (rules
