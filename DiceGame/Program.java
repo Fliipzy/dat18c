@@ -25,9 +25,6 @@ public class Program
         //Game loop
         while (true) 
         {
-            //reset
-            
-
             //Players turn
             startPlayerTurns();
 
@@ -46,10 +43,10 @@ public class Program
 
         //Checks to see who won and then displays the winning text!
         
-        String winner = playerTotalSum > opponentTotalSum ? "You" : "Your opponent";
+        String winnerText = playerTotalSum > opponentTotalSum ? "You" : "Your opponent";
         int winnerSum = playerTotalSum > opponentTotalSum ? playerTotalSum : opponentTotalSum;
 
-        log("[" + winner + " won with " + winnerSum + " points!]");
+        log("[" + winnerText + " won with " + winnerSum + " points!]");
     }
 
     public static void logTurn()
