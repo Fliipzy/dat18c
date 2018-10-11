@@ -10,9 +10,10 @@ public class Program
     static int opponentTotalSum = 0;
     static int playerRunningSum = 0;
 
+    static Dice dice = new Dice(6);
+
     public static void main(String[] args) 
     {     
-        Dice dice = new Dice(6);
 
         if (!isPlayerStarting()) 
         {
@@ -26,7 +27,7 @@ public class Program
         while (true) 
         {
             //Players turn
-            startPlayerTurns();
+            startPlayerTurn();
 
             //Opponents turn
             startOpponentTurn();
@@ -64,7 +65,7 @@ public class Program
         opponentTotalSum += score;
     }
 
-    public static startPlayersTurn()
+    public static void startPlayerTurn()
     {
         //reset running sum
         playerRunningSum = 0;
