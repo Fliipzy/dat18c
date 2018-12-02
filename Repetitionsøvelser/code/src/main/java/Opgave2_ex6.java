@@ -1,4 +1,4 @@
-public class Opgave2 
+public class Opgave2_ex6
 {
     public static void main(String[] args) 
     {
