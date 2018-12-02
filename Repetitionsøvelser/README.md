@@ -9,7 +9,8 @@
 **2. Reges kapitel 2 for loop**
 
     - Page 155 exercise 6
-    - exercise 7 - hint: udregn antal mellemrum ud fra hvor mange linier der skal skrives. Exercise - lav et program, der udskriver den lille tabel vha. Nestede for loops
+    - exercise 7 - hint: udregn antal mellemrum ud fra hvor mange linier der skal skrives.
+    - Exercise - lav et program, der udskriver den lille tabel vha. Nestede for loops
 
 **3. Reges kapitel 3 metoder**
 
@@ -35,5 +36,6 @@
 
 **8. Reges kapitel 8 klasser**
 
-    - Page 608 exercise 11, 12, 13 Exercise: Lav constructor, samt get- & set-metoder til BankAccount. Sikr at attributterne kun kan læses med get- og set-metoderne
+    - Page 608 exercise 11, 12, 13 Exercise: Lav constructor, samt get- & set-metoder til
+    - BankAccount. Sikr at attributterne kun kan læses med get- og set-metoderne
 
