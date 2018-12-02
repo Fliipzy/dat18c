@@ -32,7 +32,6 @@ public class Opgave6
             {
                 words.add(word);
             }
-            
         }
 
         for (String word : words) 
