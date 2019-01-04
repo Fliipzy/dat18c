@@ -1,3 +1,3 @@
 # Approximate π using random numbers
-![alt text](https://imgur.com/a/xVvqATP)
+![alt text](https://i.imgur.com/l8ZRjl9.png)
 
