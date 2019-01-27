@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
@@ -24,6 +25,8 @@ import bee_maze.util.algorithms.MazeSolver;
 public class SouthPanel extends JPanel
 {
     private JButton solveBtn;
+    private JLabel solveTime;
+    private JLabel solveTimeData;
 
     public SouthPanel() 
     {
@@ -48,15 +51,34 @@ public class SouthPanel extends JPanel
         solveBtn.setPreferredSize(new Dimension(70, 20));
         solveBtn.addActionListener(new SolveBtnAction());
         solveBtn.setEnabled(false);
+
+        solveTime = new JLabel();
+        solveTime.setText("Solve time (s): ");
+
+        solveTimeData = new JLabel();
+        solveTimeData.setText("0");
         
         GridBagConstraints c = new GridBagConstraints();
         c.insets = new Insets(10, 10, 10, 10);
 
         c.anchor = GridBagConstraints.EAST;
+        c.gridx = 3;
         c.weightx = 0.5;
         c.weighty = 0.5;
         c.ipady = 10;
         this.add(solveBtn, c);
+
+        c.anchor = GridBagConstraints.WEST;
+        c.gridx = 1;
+        c.weightx = 0.5;
+        c.weighty = 0.5;
+        this.add(solveTime, c);
+
+        c.anchor = GridBagConstraints.WEST;
+        c.gridx = 2;
+        c.weightx = 0.5;
+        c.weighty = 0.5;
+        this.add(solveTimeData, c);
     }
     
     private boolean isSolved = false;
@@ -76,8 +98,12 @@ public class SouthPanel extends JPanel
                 //If maze has a valid path from start to exit
                 if (mazeSolver.pathExists(path)) 
                 {
+                    ((Display)MainFrame.instance.findComponentByName("display")).paintPath(path);
                     isSolved = true;
                     solveBtn.setText("Clear");
+                    solveBtn.setEnabled(true);
+                    System.out.println(mazeSolver.getElapsedTime());
+                    solveTimeData.setText(Float.toString((float)mazeSolver.getElapsedTime() / 1_000_000_000));
                 }
                 
             } 
@@ -85,6 +111,8 @@ public class SouthPanel extends JPanel
             {
                 isSolved = false;
                 solveBtn.setText("Solve");
+                solveBtn.setEnabled(false);
+                solveTimeData.setText("0");
                 MainFrame.instance.findComponentByName("display").repaint();
             }
 		}  

@@ -132,7 +132,7 @@ public class MainFrame extends JFrame
         public void actionPerformed(ActionEvent e) 
         {
             if (lastPath == null) {
-                fileChooser = new JFileChooser();
+                fileChooser = new JFileChooser("code\\src\\main\\java\\bee_maze\\data");
             }
             else
             {
