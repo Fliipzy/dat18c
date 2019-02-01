@@ -15,6 +15,10 @@ public class MazeSolver
     private Point exitPoint;
     private Stack<Point> stack;
     private Maze maze;
+<<<<<<< HEAD
+=======
+    private long elapsedTime;
+>>>>>>> 990bf5648e6e4fc3c196afceb5b6144980ab3afa
 
     public MazeSolver(Maze maze) 
     {
@@ -22,8 +26,20 @@ public class MazeSolver
         random = new Random();
     }
 
+<<<<<<< HEAD
     public boolean pathExists(ArrayList<Point> refPath)
     {
+=======
+    public long getElapsedTime()
+    {
+        return elapsedTime;
+    }
+
+    public boolean pathExists(ArrayList<Point> refPath)
+    {
+        long start = System.nanoTime();
+
+>>>>>>> 990bf5648e6e4fc3c196afceb5b6144980ab3afa
         if (findStartAndExit()) 
         {
             mazePoints = new boolean[maze.getHorizontalRowLength()][maze.getVerticalRowLength()];
@@ -37,6 +53,11 @@ public class MazeSolver
                 //Exit found
                 if (stack.peek().equals(exitPoint)) 
                 {
+<<<<<<< HEAD
+=======
+                    elapsedTime = System.nanoTime() - start;
+
+>>>>>>> 990bf5648e6e4fc3c196afceb5b6144980ab3afa
                     refPath.add(new Point(exitPoint.getX(), exitPoint.getY() + 1));
 
                     while (stack.getLength() > 0) 

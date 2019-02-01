@@ -1,6 +1,11 @@
 package bee_maze.gui;
 
 import java.awt.BorderLayout;
+<<<<<<< HEAD
+=======
+import java.awt.Component;
+import java.awt.Container;
+>>>>>>> 990bf5648e6e4fc3c196afceb5b6144980ab3afa
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -9,8 +14,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
+<<<<<<< HEAD
 
 import javax.swing.JButton;
+=======
+import java.util.HashMap;
+import java.util.List;
+
+>>>>>>> 990bf5648e6e4fc3c196afceb5b6144980ab3afa
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -20,23 +31,38 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import bee_maze.util.Maze;
+<<<<<<< HEAD
 import bee_maze.util.Point;
 import bee_maze.util.algorithms.MazeSolver;
+=======
+>>>>>>> 990bf5648e6e4fc3c196afceb5b6144980ab3afa
 import bee_maze.util.io.MazeLoader;
 
 @SuppressWarnings("serial")
 public class MainFrame extends JFrame 
 {
+<<<<<<< HEAD
     private static final int WIDTH = 500;
     private static final int HEIGHT = 550;
 
     private Maze maze;
 
     private JPanel southPanel;
+=======
+    public static MainFrame instance = null;
+
+    private static final int WIDTH = 500;
+    private static final int HEIGHT = 580;
+
+    private Maze maze = null;
+
+    private SouthPanel southPanel;
+>>>>>>> 990bf5648e6e4fc3c196afceb5b6144980ab3afa
     private JPanel displayPanel;
 
     private JFileChooser fileChooser;
 
+<<<<<<< HEAD
     private JButton solveBtn;
     private JFrame frame;
     private Display display;
@@ -46,12 +72,33 @@ public class MainFrame extends JFrame
     public MainFrame(String title) 
     {
         frame = new JFrame("Bee Maze");
+=======
+    private JFrame frame;
+    private Display display;
+
+    private HashMap<String, Component> componentMap;
+
+    public Maze getMaze()
+    {
+        return maze;
+    }
+
+    public MainFrame(String title) 
+    {
+        if (instance == null) 
+        {
+            instance = this;   
+        }
+
+        frame = new JFrame(title);
+>>>>>>> 990bf5648e6e4fc3c196afceb5b6144980ab3afa
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setPreferredSize(new Dimension(WIDTH, HEIGHT));
         frame.setMinimumSize(new Dimension(WIDTH, HEIGHT));
         frame.setMaximumSize(new Dimension(WIDTH, HEIGHT));
         frame.setResizable(false);
         frame.setVisible(true);
+<<<<<<< HEAD
 
         initJMenu();
 
@@ -63,6 +110,17 @@ public class MainFrame extends JFrame
         solveBtn = new JButton("Solve");
         
         display = new Display();
+=======
+        
+
+        initJMenu();
+
+        displayPanel = new JPanel(new GridBagLayout());
+        displayPanel.setName("displayPanel");
+
+        display = new Display();
+        display.setName("display");
+>>>>>>> 990bf5648e6e4fc3c196afceb5b6144980ab3afa
         
         GridBagConstraints dpc = new GridBagConstraints();
         
@@ -73,6 +131,7 @@ public class MainFrame extends JFrame
         
         frame.add(displayPanel);
         displayPanel.add(display, dpc);
+<<<<<<< HEAD
         frame.add(southPanel, BorderLayout.SOUTH);
         GridBagConstraints spc = new GridBagConstraints();
         
@@ -113,6 +172,14 @@ public class MainFrame extends JFrame
                 }
             }
         });
+=======
+
+        southPanel = new SouthPanel();
+        southPanel.setName("southPanel");
+        frame.add(southPanel, BorderLayout.SOUTH);
+
+        createComponentMap();
+>>>>>>> 990bf5648e6e4fc3c196afceb5b6144980ab3afa
     }
 
     private void initJMenu()
@@ -138,6 +205,10 @@ public class MainFrame extends JFrame
         frame.setJMenuBar(menuBar);
     }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 990bf5648e6e4fc3c196afceb5b6144980ab3afa
     private class ExitAppAction implements ActionListener
     {
         @Override
@@ -155,7 +226,11 @@ public class MainFrame extends JFrame
         public void actionPerformed(ActionEvent e) 
         {
             if (lastPath == null) {
+<<<<<<< HEAD
                 fileChooser = new JFileChooser();
+=======
+                fileChooser = new JFileChooser("code\\src\\main\\java\\bee_maze\\data");
+>>>>>>> 990bf5648e6e4fc3c196afceb5b6144980ab3afa
             }
             else
             {
@@ -163,7 +238,10 @@ public class MainFrame extends JFrame
             }
 
             fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+<<<<<<< HEAD
 
+=======
+>>>>>>> 990bf5648e6e4fc3c196afceb5b6144980ab3afa
             int returnMsg = fileChooser.showOpenDialog(frame);
 
             if (returnMsg == JFileChooser.APPROVE_OPTION) 
@@ -175,6 +253,10 @@ public class MainFrame extends JFrame
                 if (maze != null) 
                 {
                     display.paintMaze(maze);
+<<<<<<< HEAD
+=======
+                    findComponentByName("solveBtn").setEnabled(true);
+>>>>>>> 990bf5648e6e4fc3c196afceb5b6144980ab3afa
                 } 
                 else
                 {
@@ -183,4 +265,50 @@ public class MainFrame extends JFrame
             }
         }
     }
+<<<<<<< HEAD
+=======
+
+    private void createComponentMap()
+    {
+        componentMap = new HashMap<String, Component>();
+        List<Component> components = getAllComponents(frame.getContentPane());
+
+        for (Component comp : components) 
+        {
+            componentMap.put(comp.getName(), comp);
+        }
+
+    }
+
+    private List<Component> getAllComponents(final Container c)
+    {
+        Component[] compArray = c.getComponents();
+        List<Component> compList = new ArrayList<Component>();
+
+        for (Component comp : compArray) {
+            
+            compList.add(comp);
+
+            if (comp instanceof Container) 
+            {
+                compList.addAll(getAllComponents((Container) comp));
+            }
+
+        }                   
+
+        return compList;
+    }
+
+    public Component findComponentByName(String name)
+    {
+        if (componentMap.containsKey(name)) 
+        {
+            return (Component)componentMap.get(name);
+        }
+        else
+        {
+            return null;
+        }
+    }
+>>>>>>> 990bf5648e6e4fc3c196afceb5b6144980ab3afa
 }
