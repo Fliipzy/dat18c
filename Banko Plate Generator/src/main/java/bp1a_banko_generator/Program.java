@@ -10,11 +10,9 @@ public final class Program
     public static void main(String[] args) 
     {
         BankoPlate b1 = BankoPlateGenerator.generatePlate();
-        BankoPlate b2 = BankoPlateGenerator.generatePlate();
-        BankoPlate b3 = BankoPlateGenerator.generatePlate();
         
         BankoPlateFileWriter writer = new BankoPlateFileWriter();
 
-        writer.write(Arrays.asList(b1,b2,b3));
+        writer.write(Arrays.asList(b1));
     }
 }
