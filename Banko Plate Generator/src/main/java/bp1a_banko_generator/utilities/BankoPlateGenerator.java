@@ -26,6 +26,11 @@ public class BankoPlateGenerator
                     numbers[availableRows.get(j)][index] = random.nextInt(9)+1;
                     continue;
                 }
+                if (index == 8) {
+                    numbers[availableRows.get(j)][index] = random.nextInt(11)+80;
+                    continue;
+                }
+
                 numbers[availableRows.get(j)][index] = random.nextInt(9) + (index) * 10;
             }
         }
