@@ -1,5 +1,6 @@
 package bp1a_banko_generator;
 
+import java.io.FileWriter;
 import java.util.Arrays;
 
 import bp1a_banko_generator.utilities.BankoPlateGenerator;
@@ -14,5 +15,6 @@ public final class Program
         BankoPlateFileWriter writer = new BankoPlateFileWriter();
 
         writer.write(Arrays.asList(b1));
+
     }
 }
