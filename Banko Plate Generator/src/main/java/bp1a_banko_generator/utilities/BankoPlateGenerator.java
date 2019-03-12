@@ -1,5 +1,6 @@
 package bp1a_banko_generator.utilities;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -26,6 +27,11 @@ public class BankoPlateGenerator
                     numbers[availableRows.get(j)][index] = random.nextInt(9)+1;
                     continue;
                 }
+                if (index == 8) {
+                    numbers[availableRows.get(j)][index] = random.nextInt(11)+80;
+                    continue;
+                }
+
                 numbers[availableRows.get(j)][index] = random.nextInt(9) + (index) * 10;
             }
         }
@@ -48,6 +54,23 @@ public class BankoPlateGenerator
                     rndNum = random.nextInt(9) + 1 + rndColumn*10;
                 }
                 numbers[i][rndColumn] = rndNum;
+            }
+            
+        }
+
+        for (int i = 0; i < BankoPlate.COLUMNS; i++) 
+        {
+            if (numbers[0][i] > numbers[1][i] && numbers[1][i] != 0) 
+            {
+                int temp = numbers[1][i];
+                numbers[1][i] = numbers[0][i];
+                numbers[0][i] = temp;
+            }
+            if (numbers[1][i] > numbers[2][i] && numbers[2][i] != 0) 
+            {
+                int temp = numbers[2][i];
+                numbers[2][i] = numbers[1][i];
+                numbers[1][i] = temp;
             }
         }
 
