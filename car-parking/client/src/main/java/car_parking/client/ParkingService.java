@@ -1,5 +1,6 @@
 package car_parking.client;
 
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
@@ -10,6 +11,7 @@ public class ParkingService
 {
     Socket socket = null;
     DataOutputStream outputStream = null;
+    DataInputStream inputStream = null;
 
     public ParkingService() 
     {
@@ -36,10 +38,22 @@ public class ParkingService
             }
         }
 
+        if (inputStream == null) 
+        {
+            try 
+            {
+                inputStream = new DataInputStream(socket.getInputStream());
+            } 
+            catch (Exception e) 
+            {
+                e.printStackTrace();
+            }    
+        }
+        
        try 
        {
            outputStream.writeUTF(vehicle.getModel() + "," + vehicle.getLicense());
-           System.out.println("[ParkingService] The vehicle was parked at port " + socket.getPort() + "!");  
+           System.out.println("[ParkingService] The vehicle was parked at port " + socket.getPort() + "!");
        } 
        catch (IOException e) 
        {

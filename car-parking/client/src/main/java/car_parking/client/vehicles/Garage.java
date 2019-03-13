@@ -20,7 +20,7 @@ public class Garage
 
     private void initCarList() 
     {    
-        Path path = Paths.get("src\\main\\java\\car_parking\\client\\data", "car-models.txt");
+        Path path = Paths.get("car_parking\\client\\data", "car-models.txt");
 
         try 
         {
