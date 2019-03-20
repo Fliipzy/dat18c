@@ -1,67 +1,78 @@
 package car_parking.client;
 
-import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
-import car_parking.client.util.UserInput;
-import car_parking.client.vehicles.Garage;
+import car_parking.client.log.CommunicationLog;
+import car_parking.client.util.ConsoleHandler;
+import car_parking.client.util.InputHandler;
 import car_parking.client.vehicles.Vehicle;
+import car_parking.client.vehicles.VehicleCreator;
+import car_parking.client.vehicles.VehicleParker;
 
 public class Program 
 {
     public static void main(String[] args) 
     {
-        ParkingService parkingService = new ParkingService();
-        Garage garage = new Garage();
-        Short port = null;
+        VehicleParker parker = VehicleParker.getInstance();
+        VehicleCreator creator = new VehicleCreator();
+        CommunicationLog log = new CommunicationLog();
+        
+        //Add log
+        parker.addLogSubscriber(log);
 
-        System.out.println("What port number does your parking lot have?");
-        System.out.print("Port: ");
-
-        port = UserInput.getShortInput();
-
-        // connection loop
-        while (port == null || !parkingService.connect(port)) {
-            System.out.print("Try another port..\nPort: ");
-            port = UserInput.getShortInput();
-        }
-
-        // main loop
-        Short choice = null;
+        //Get parking lot address
+        Short port;
+        System.out.print("What's the parking lot port number?\n");
         while (true) 
         {
-            //clearScreen();
-            System.out.println("Welcome to the car service!\n\n" + "What can we do for you?\n"
-                    + "1. Park a vehicle for me!\n"
-                    + "2. I wanna leave!");
+            port = InputHandler.getShort();
 
-            choice = UserInput.getShortInput();
+            if (port > 1000 && parker.findParkingSpot(port)) 
+            {
+                System.out.println("Connection to parking lot has been established!");
+                break;
+            }
+            System.out.println("Couldn't find anything at that port! try again..\n");
+        }
+        
+        //Main loop
+        while (true) 
+        {
+            ConsoleHandler.clear();
+            promptMenu();
 
-            switch (choice) {
-            case 1: // Park!
-                Vehicle vehicle = garage.getRandomCar();
-                parkingService.parkVehicle(vehicle);
-                break;
-            case 2: // Exit
-                parkingService.disconnect();
-                System.exit(0);
-                break;
-
-            default:
-                System.out.println("What?");
-                break;
+            switch (InputHandler.getByte()) 
+            {
+                case 1:
+                    Vehicle vehicle = creator.getRandomVehicle();
+                    parker.sendVehicle(vehicle);
+                    break;
+                case 2:
+                    ConsoleHandler.clear();
+                    log.display();
+                    System.console().readLine();
+                    break;
+                case 3:
+                    parker.leaveParkingSpot();
+                    System.exit(0);
+                    break;
+                default:
+                    System.out.println("Not a valid operation!");
+                    break;
             }
         }
     }
 
-    public static void clearScreen() 
+    public static void promptMenu()
     {
-        try 
-        {
-            new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-        } 
-        catch (InterruptedException | IOException e) 
-        {
-            e.printStackTrace();
-        }
+        System.out.println(
+            "Choose client operation:\n" +
+            "────────────────────────\n" +
+            "1. Send new vehicle to server.\n" +
+            "2. View client server log.\n" +
+            "3. Exit program.\n"
+        );
     }
+
 }

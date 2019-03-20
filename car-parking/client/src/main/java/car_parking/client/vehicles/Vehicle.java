@@ -11,6 +11,12 @@ public class Vehicle
         this.license = generateLicensePlate();
     }
 
+    public Vehicle(String model, String license) 
+    {
+        this.model = model;
+        this.license = license;
+    }
+
     public String getModel() 
     {
         return model;
