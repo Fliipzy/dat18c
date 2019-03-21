@@ -44,6 +44,7 @@ public final class CommunicationLog implements ILog
     @Override
     public void addLogEntry(String s) 
     {
+        calender = Calendar.getInstance();
         messages.add(String.format("[%s] %s", sdf.format(calender.getTime()), s));
     }
 }

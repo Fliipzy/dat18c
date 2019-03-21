@@ -42,7 +42,7 @@ public class VehicleParker implements ILoggable
             this.outputStream = new DataOutputStream(socket.getOutputStream()); 
             this.inputStream = new DataInputStream(socket.getInputStream());
 
-            notifyLogs("Connection was successfully established to server!");
+            notifyLogs("Connection was established to server!");
 
             return true; 
         }
@@ -60,8 +60,7 @@ public class VehicleParker implements ILoggable
 
             try 
             {
-                outputStream.writeUTF("NEW_CAR " + vehicleMessage); 
-                outputStream.flush(); 
+                outputStream.writeUTF("NEW_VEHICLE"); 
                 
                 if (inputStream.readUTF().equals("OK"))
                 {
@@ -102,8 +101,9 @@ public class VehicleParker implements ILoggable
     {
         try 
         {
+            outputStream.writeUTF("CLIENT_DISCONNECTION");
             socket.close(); 
-            outputStream.close(); 
+            outputStream.close();
         }
         catch (Exception e)
         {

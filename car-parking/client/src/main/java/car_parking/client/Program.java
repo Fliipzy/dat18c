@@ -40,8 +40,8 @@ public class Program
             switch (InputHandler.getByte()) 
             {
                 case 1:
-
                     int spaces = parker.getRemainingParkingSpaces();
+                    System.out.println("Spaces left: " + spaces);
                     if (spaces > 0) 
                     {
                         Vehicle vehicle = creator.getRandomVehicle();

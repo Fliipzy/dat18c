@@ -19,12 +19,39 @@ public class ParkingLot
         this.port = port;
     }
 
+    public String getClientRequest()
+    {
+        try 
+        {
+            return inputStream.readUTF();
+        } 
+        catch (IOException e) 
+        {
+            return "CLIENT_DISCONNECTION";
+        }
+    }
+
+    public boolean sendResponse(String response)
+    {
+        try 
+        {
+            outputStream.writeUTF(response);
+            return true;
+        } 
+        catch (Exception e) 
+        {
+            return false;
+        }
+    }
+
     public void waitForConnection()
     {
         try 
         {
             this.serverSocket = new ServerSocket(port);
             this.clientSocket = serverSocket.accept();
+            this.inputStream = new DataInputStream(clientSocket.getInputStream());
+            this.outputStream = new DataOutputStream(clientSocket.getOutputStream());
         } 
         catch (IOException e)
         {
