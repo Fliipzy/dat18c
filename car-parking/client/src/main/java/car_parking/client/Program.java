@@ -4,7 +4,7 @@ import car_parking.client.log.CommunicationLog;
 import car_parking.client.util.ConsoleHandler;
 import car_parking.client.util.InputHandler;
 import car_parking.client.vehicles.*;
-import car_parking.client.server.*;
+import car_parking.client.io.*;
 
 public class Program 
 {
@@ -42,7 +42,7 @@ public class Program
             {
                 //Send new vehicle to parking lot
                 case 1:
-                    int spaces = Integer.parseInt(dialogue.getResponse("SPACES_LEFT"));
+                    int spaces = Integer.parseInt(dialogue.getResponse("SPACES"));
                     if (spaces > 0) 
                     {
                         Vehicle vehicle = creator.getRandomVehicle();

@@ -1,53 +1,94 @@
 package car_parking.server;
 
+import javax.lang.model.util.ElementScanner6;
+
+import car_parking.server.vehicles.ParkingLot;
+import car_parking.server.vehicles.Vehicle;
+
 public class Program 
 {
-    private static final int MAX_SPACES = 10;
+
     public static void main(String[] args)
-     {
-        ParkingLot parkingLot = new ParkingLot((short)8080);
+    {
+        ClientConnector connector = new ClientConnector((short)8080);
+        ClientDialogue dialogue = null;
+        ParkingLot parkingLot = new ParkingLot();
 
+
+        //Waits for client to connect
         System.out.println("Waiting for client to connect..");
-        parkingLot.waitForConnection();
-        System.out.println("Client connected!");
+        connector.waitForClient();
+        dialogue = new ClientDialogue(connector.getClientSocket());
 
-        int spacesLeft = MAX_SPACES; 
-        String request = "";
-        String keyword = "";
-        String response = "";
+        String request = null;
+        String keyword = null;
+        String data = null;
+        String response = null;
 
+        //Main loop
         while (true) 
         {
-            request = parkingLot.getClientRequest();
-            System.out.println(request);
-            
-            switch (request) 
+            displayServerInterface();
+
+            //Get client request
+            request = dialogue.getRequest();
+            if (request.contains(" ")) 
             {
-                case "NEW_VEHICLE":
-                    if (spacesLeft > 0) 
-                    {
-                        parkingLot.sendResponse("OK");
-                        spacesLeft--;
-                    } 
-                    else 
-                    {
-                        parkingLot.sendResponse("NO_SPACE");
-                    }
-                    break;
-                case "SPACES_LEFT":
-                    parkingLot.sendResponse(Integer.toString(spacesLeft));
+                keyword = request.substring(0, request.indexOf(" "));
+            }
+            else
+            {
+                keyword = request;
+                data = null;
+            }
+
+            switch (keyword) 
+            {
+                case "SPACES":
+                    response = Integer.toString(parkingLot.getFreeSpacesAmount());
                     break;
 
-                case "CLIENT_DISCONNECTION":
-                    parkingLot.close();
-                    System.out.println("Press anything to close..");
-                    System.console().readLine();
-                    System.exit(0);
+                case "PARK":
+                    if(parkingLot.hasSpace())
+                    {
+                        if (data != null) 
+                        {
+                            Vehicle v = Vehicle.tryParseFromString(data);
+                            parkingLot.parkVehicle(v);
+                            response = "OK";
+                            break;
+                        }
+                        response = "BAD_REQUEST";
+                        break;
+                    } 
+                    response = "PARKING_LOT_FULL";
                     break;
+
+                case "CARS":
+                    if (parkingLot.getFreeSpacesAmount() < parkingLot.MAX_SPACES) 
+                    {
+                        response = "";
+                        for (Vehicle v : parkingLot.getVehicles()) 
+                        {
+                            response += String.format("(%s, %s)", v.getModel(), v.getLicense());
+                        }
+                        break;
+                    }
+                    response = "EMPTY";
+                    break;
+
                 default:
-                    parkingLot.sendResponse("ERROR");
+                    response = "BAD_REQUEST";
                     break;
             }
+            //Send response
+            dialogue.sendResponse(response);
         }
+
+    }
+
+    public static void displayServerInterface()
+    {
+        
     }
 }

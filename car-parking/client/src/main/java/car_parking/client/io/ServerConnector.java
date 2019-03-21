@@ -1,4 +1,4 @@
-package car_parking.client;
+package car_parking.client.io;
 
 import java.io.IOException;
 import java.net.Socket;

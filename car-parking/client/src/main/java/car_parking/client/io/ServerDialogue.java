@@ -1,4 +1,4 @@
-package car_parking.client.server;
+package car_parking.client.io;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
