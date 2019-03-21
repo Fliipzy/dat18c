@@ -38,8 +38,15 @@ public class ServerDialogue implements ILoggable
     {
         try 
         {
+            //write and read
             output.writeUTF(s);
-            return input.readUTF();
+            String response = input.readUTF();
+
+            //log dialogue
+            notifyLogs(String.format("CLIENT_REQUEST: %s", s));
+            notifyLogs(String.format("SERVER_RESPONSE: %s", response));
+
+            return response;
         } 
         catch (Exception e) 
         {

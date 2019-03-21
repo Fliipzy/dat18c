@@ -32,6 +32,9 @@ public class Program
             System.out.println("Couldn't find anything at that port! try again..\n");
         }
         
+        String request = null;
+        String response = null;
+
         //Main menu loop
         while (true) 
         {
@@ -42,37 +45,42 @@ public class Program
             {
                 //Send new vehicle to parking lot
                 case 1:
-                    int spaces = Integer.parseInt(dialogue.getResponse("SPACES"));
-                    if (spaces > 0) 
-                    {
-                        Vehicle vehicle = creator.getRandomVehicle();
-                        String data = String.format("PARK %s, %s", vehicle.getModel(), vehicle.getLicense());
+                    Vehicle vehicle = creator.getRandomVehicle();
+                    request = String.format("PARK %s, %s", vehicle.getModel(), vehicle.getLicense());
+                    response = dialogue.getResponse(request);
 
-                        if (dialogue.getResponse(data).equals("OK"))
-                        {
-                            System.out.printf("%s was successfully parked!", vehicle.getModel());
-                        }
-                        else
-                        {
-                            System.out.println("Something went wrong trying to park!");
-                        }
-                    } 
+                    if (response.equals("OK"))
+                    {
+                        System.out.printf("%s was successfully parked!", vehicle.getModel());
+                    }
+                    else if (response.equals("FULL"))
+                    {
+                        System.out.println("The parking lot doesn't have any free spaces left!");
+                    }
                     else
                     {
-                        System.out.println("Couldn't contact parking lot!");
+                        System.out.println("Something went wrong!");
                     }
                     System.console().readLine();
                     break;
 
-                //View client server log
+                //Get available parking spaces
                 case 2:
+                    request = "SPACES";
+                    response = dialogue.getResponse(request);
+                    System.out.println(String.format("%s free spaces left!", response));
+                    System.console().readLine();
+                    break;
+
+                //View client server log
+                case 3:
                     ConsoleHandler.clear();
                     log.display();
                     System.console().readLine();
                     break;
 
                 //Exit program
-                case 3:
+                case 4:
                     dialogue.getResponse("CLIENT_DISCONNECT");
                     connector.tryClose();
                     dialogue.tryClose();
@@ -92,8 +100,9 @@ public class Program
             "Choose client operation:\n" +
             "────────────────────────\n" +
             "1. Send new vehicle to server.\n" +
-            "2. View client server log.\n" +
-            "3. Exit program.\n"
+            "2. Get parking spaces amount.\n" +
+            "3. View client server log.\n" +
+            "4. Exit program.\n"
         );
     }
 

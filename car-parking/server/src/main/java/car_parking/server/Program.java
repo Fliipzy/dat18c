@@ -1,7 +1,10 @@
 package car_parking.server;
 
+import java.util.ArrayList;
+
 import javax.lang.model.util.ElementScanner6;
 
+import car_parking.server.util.ConsoleHandler;
 import car_parking.server.vehicles.ParkingLot;
 import car_parking.server.vehicles.Vehicle;
 
@@ -28,13 +31,15 @@ public class Program
         //Main loop
         while (true) 
         {
-            displayServerInterface();
+            ConsoleHandler.clear();
+            displayServerInterface(parkingLot);
 
             //Get client request
             request = dialogue.getRequest();
             if (request.contains(" ")) 
             {
                 keyword = request.substring(0, request.indexOf(" "));
+                data = request.substring(keyword.length()+1, request.length());
             }
             else
             {
@@ -87,8 +92,14 @@ public class Program
 
     }
 
-    public static void displayServerInterface()
+    //TODO: Clean this up
+    public static void displayServerInterface(ParkingLot parkingLot)
     {
-        
+        System.out.println("PARKED CARS:\n");
+
+        for (Vehicle c : parkingLot.getVehicles())
+        {
+            System.out.println(c.getModel());
+        }
     }
 }

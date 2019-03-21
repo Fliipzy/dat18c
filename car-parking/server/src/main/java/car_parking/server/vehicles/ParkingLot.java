@@ -25,7 +25,17 @@ public class ParkingLot
     {
         if (hasSpace()) 
         {
-            vehicles.add(vehicle);    
+            vehicles.add(vehicle);
+            freeSpacesAmount--;
+        }
+    }
+
+    public void removeVehicle()
+    {
+        if (vehicles.size() > 0) 
+        {
+            vehicles.remove(0);
+            freeSpacesAmount++;
         }
     }
 
