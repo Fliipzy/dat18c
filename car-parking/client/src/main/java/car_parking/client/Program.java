@@ -9,7 +9,6 @@ public class Program
 {
     public static void main(String[] args) 
     {
-
         VehicleParker parker = VehicleParker.getInstance();
         VehicleCreator creator = new VehicleCreator();
         CommunicationLog log = new CommunicationLog();

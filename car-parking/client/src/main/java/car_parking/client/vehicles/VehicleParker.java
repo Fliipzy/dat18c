@@ -60,7 +60,7 @@ public class VehicleParker implements ILoggable
 
             try 
             {
-                outputStream.writeUTF(vehicleMessage); 
+                outputStream.writeUTF("NEW_CAR " + vehicleMessage); 
                 outputStream.flush(); 
                 
                 if (inputStream.readUTF().equals("OK"))
