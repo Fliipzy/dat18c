@@ -1,24 +1,20 @@
 package car_parking.client;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-
 import car_parking.client.log.CommunicationLog;
 import car_parking.client.util.ConsoleHandler;
 import car_parking.client.util.InputHandler;
-import car_parking.client.vehicles.Vehicle;
-import car_parking.client.vehicles.VehicleCreator;
-import car_parking.client.vehicles.VehicleParker;
+import car_parking.client.vehicles.*;
 
 public class Program 
 {
     public static void main(String[] args) 
     {
+
         VehicleParker parker = VehicleParker.getInstance();
         VehicleCreator creator = new VehicleCreator();
         CommunicationLog log = new CommunicationLog();
         
-        //Add log
+        //Add log as subscriber to parker
         parker.addLogSubscriber(log);
 
         //Get parking lot address
@@ -36,7 +32,7 @@ public class Program
             System.out.println("Couldn't find anything at that port! try again..\n");
         }
         
-        //Main loop
+        //Main menu loop
         while (true) 
         {
             ConsoleHandler.clear();
@@ -45,18 +41,43 @@ public class Program
             switch (InputHandler.getByte()) 
             {
                 case 1:
-                    Vehicle vehicle = creator.getRandomVehicle();
-                    parker.sendVehicle(vehicle);
+
+                    int spaces = parker.getRemainingParkingSpaces();
+                    if (spaces > 0) 
+                    {
+                        Vehicle vehicle = creator.getRandomVehicle();
+                        if (parker.sendVehicle(vehicle))
+                        {
+                            System.out.printf("%s was successfully parked!", vehicle.getModel());
+                        }
+                        else
+                        {
+                            System.out.println("Something went wrong trying to park!");
+                        }
+                    } 
+                    else if (spaces > -1)
+                    {
+                        System.out.println("No more space in the parking lot!");
+                    }
+                    else
+                    {
+                        System.out.println("Couldn't contact parking lot!");
+                    }
+
+                    System.console().readLine();
                     break;
+
                 case 2:
                     ConsoleHandler.clear();
                     log.display();
                     System.console().readLine();
                     break;
+
                 case 3:
                     parker.leaveParkingSpot();
                     System.exit(0);
                     break;
+
                 default:
                     System.out.println("Not a valid operation!");
                     break;

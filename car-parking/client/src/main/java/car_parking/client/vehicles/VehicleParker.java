@@ -1,5 +1,6 @@
 package car_parking.client.vehicles; 
 
+import java.io.DataInputStream;
 import java.io.DataOutputStream; 
 import java.io.IOException; 
 import java.net.InetAddress; 
@@ -15,6 +16,7 @@ public class VehicleParker implements ILoggable
 
     private Socket socket = null; 
     private DataOutputStream outputStream = null; 
+    private DataInputStream inputStream = null;
 
     private static VehicleParker instance = null; 
 
@@ -38,6 +40,10 @@ public class VehicleParker implements ILoggable
         {
             this.socket = new Socket(InetAddress.getByName("localhost"), port); 
             this.outputStream = new DataOutputStream(socket.getOutputStream()); 
+            this.inputStream = new DataInputStream(socket.getInputStream());
+
+            notifyLogs("Connection was successfully established to server!");
+
             return true; 
         }
         catch (IOException e)
@@ -56,17 +62,40 @@ public class VehicleParker implements ILoggable
             {
                 outputStream.writeUTF(vehicleMessage); 
                 outputStream.flush(); 
+                
+                if (inputStream.readUTF().equals("OK"))
+                {
+                    notifyLogs(String.format("Vehicle (id: %s) was successfully sent to server!", vehicle.license));
+                    return true;
+                } 
+                else
+                {
+                    notifyLogs(String.format("Vehicle (id: %s) could not be sent to server!", vehicle.license));
+                    return false;
+                }
             }
             catch (IOException e)
             {
-                System.out.println("IOException: " + e.getMessage()); 
+                System.out.println("IOException: " + e.getMessage());
+                return false; 
             }
-            return true; 
         }
-        else 
+        return false;
+    }
+
+    public int getRemainingParkingSpaces()
+    {
+        try 
         {
-            return false; 
-        }
+            outputStream.writeUTF("SPACES_LEFT");
+
+            String response = inputStream.readUTF();
+            return Integer.parseInt(response);
+        } 
+        catch (IOException e) 
+        {
+			return -1;
+		}
     }
 
     public void leaveParkingSpot()

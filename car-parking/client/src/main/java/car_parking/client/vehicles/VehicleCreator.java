@@ -20,7 +20,7 @@ public class VehicleCreator
 
     private void initVehicleList() 
     {    
-        Path path = Paths.get("car_parking\\client\\data", "car-models.txt");
+        Path path = Paths.get("client/src/main/java/car_parking/client/data", "car-models.txt");
 
         try 
         {
@@ -28,7 +28,7 @@ public class VehicleCreator
         } 
         catch (IOException e) 
         {
-            System.out.println("IOException: " + e.getMessage());
+            System.out.println("IOException: " + e.toString());
         }
     }
 

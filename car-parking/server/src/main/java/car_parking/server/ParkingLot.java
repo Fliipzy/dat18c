@@ -2,28 +2,31 @@ package car_parking.server;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
 public class ParkingLot 
 {
-    ServerSocket serverSocket;
-    Socket clientSocket;
-    DataOutputStream outputStream;
-    DataInputStream inputStream;
+    private Short port;
+    private ServerSocket serverSocket;
+    private Socket clientSocket;
+    private DataOutputStream outputStream;
+    private DataInputStream inputStream;
 
-    public ParkingLot() 
+    public ParkingLot(short port) 
     {
+        this.port = port;
     }
 
-    public void open()
+    public void waitForConnection()
     {
         try 
         {
-            this.serverSocket = new ServerSocket(8000);
+            this.serverSocket = new ServerSocket(port);
             this.clientSocket = serverSocket.accept();
         } 
-        catch (Exception e)
+        catch (IOException e)
         {
             e.printStackTrace();
         }
@@ -35,11 +38,12 @@ public class ParkingLot
         {
             clientSocket.close();
             serverSocket.close();
+            outputStream.flush();
             outputStream.close();
             inputStream.close();
             return true;
         } 
-        catch (Exception e) 
+        catch (IOException e) 
         { 
             return false; 
         }
