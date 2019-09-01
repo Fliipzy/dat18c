@@ -8,7 +8,7 @@ public class Program
 {
     public static void main(String[] args)
     {
-        PersonFileReader personFileReader = new PersonFileReader(new File("persons.txt"));
+        PersonFileReader personFileReader = new PersonFileReader(new File("src/main/resources/persons.txt"));
         List<Person> persons = personFileReader.readFile();
 
         /*List<Person> persons = new ArrayList<Person>()
