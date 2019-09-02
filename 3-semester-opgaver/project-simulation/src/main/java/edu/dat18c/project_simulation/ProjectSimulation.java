@@ -24,12 +24,14 @@ public class ProjectSimulation
     public void start()
     {
         StringBuilder sb = new StringBuilder();
+        int estimatedIterations = getEstimatedIterations();
         long iterations = 0;
         double finishedPercent = 0;
-        int estimatedIterations = getEstimatedIterations();
+        project.getStartPhase().setCurrentPercent(1);
 
         sb.append("=== STARTING " + project.getName() + " ===\n\n");
         sb.append("Estimated finish time: " + (estimatedIterations == -1 ? "NEVER" :  estimatedIterations + " iterations"));
+        System.out.println(sb.toString());
 
         while (finishedPercent < options.getStopPercent()) 
         {
@@ -40,17 +42,20 @@ public class ProjectSimulation
                     //If project is ready to progress to next phase
                     if (phaseCompletions.get(p).equals(p.getIterationCost())) 
                     {
+                        double splitPercentSum = 0;
                         //Split resources to all phases
                         for (Map.Entry<Phase, Float> next : p.getNextPhases().entrySet()) 
                         {
                             double nextCurrentPercent = next.getKey().getCurrentPercent();
-                            double projectSplitPercent = next.getValue();
-                            next.getKey().setCurrentPercent(p.getCurrentPercent() + nextCurrentPercent * projectSplitPercent);
+                            double phaseSplitPercent = next.getValue();
+                            next.getKey().setCurrentPercent(p.getCurrentPercent() * phaseSplitPercent + nextCurrentPercent);
+
+                            splitPercentSum += phaseSplitPercent;
                         }
                         //reset phase iteration completeness
                         phaseCompletions.replace(p, 0);
+                        p.setCurrentPercent(p.getCurrentPercent() - splitPercentSum);
                     }
-
                     phaseCompletions.replace(p, phaseCompletions.get(p) + 1);
                 }
             }

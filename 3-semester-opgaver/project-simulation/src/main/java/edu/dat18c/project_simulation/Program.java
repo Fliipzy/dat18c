@@ -37,7 +37,7 @@ public class Program
 
         //Set simulation options
         SimulationOptions options = new SimulationOptions();
-        options.setIterationSleepTime(10);
+        options.setIterationSleepTime(500);
         options.setRunUpdates(true);
         options.setStopPercent(0.99f);
 

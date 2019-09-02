@@ -25,4 +25,14 @@ public class Project
     {
         return phases;
     }
+
+    public Phase getStartPhase()
+    {
+        return phases.get(0);
+    }
+
+    public Phase getFinalPhase()
+    {
+        return phases.get(phases.size()-1);
+    }
 }
