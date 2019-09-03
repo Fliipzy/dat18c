@@ -7,19 +7,22 @@ import java.util.Arrays;
  */
 public class IntArrayList 
 {
-    int c_index = 0;
-    int[] array;
+    int c_index = 0; //Current index pointer in array
+    int[] array; //The array we store the data in
 
+    /**
+     * The constructor of the IntArrayList
+     */
     public IntArrayList() 
     {
         array = new int[5];
     }
 
-    public IntArrayList(int initSize)
-    {
-        array = new int[initSize];
-    }
-
+    /**
+     * Returns the indexed integer. Function runs at O(1).
+     * @param index 
+     * @return The integer stored in the array at position {@code index}
+     */
     public int get(int index)
     {
         if (index > 0 && index <= array.length) 
@@ -29,6 +32,12 @@ public class IntArrayList
         throw new IndexOutOfBoundsException();
     }
 
+    /**
+     * Adds a new integer to the list. If the {@code array} has space for one more it runs at O(1). But if
+     * the array needs to grow, it runs at O(n), because we need to iterate through all objects
+     * in the array and copy them into a new bigger array.
+     * @param value The integer that will be stored in the {@code array}.
+     */
     public void add(int value)
     {
         if (hasSpace()) 
@@ -40,6 +49,11 @@ public class IntArrayList
         grow();
     }
 
+    /**
+     * Removes integer at the given {@code index} position. The function runs at O(n)
+     * because we copy over arrays multiple times.
+     * @param index The position in the array that will be deleted.
+     */
     public void remove(int index)
     {
         int[] newArray = new int[array.length-1];
@@ -52,11 +66,18 @@ public class IntArrayList
         this.array = newArray; 
     }
 
+    /**
+     * @return The size of the array.
+     */
     public int size()
     {
         return c_index;
     }
 
+    /**
+     * Checks to see if array is filled up.
+     * @return The {@code boolean} value, based on whether the array is full or empty.
+     */
     private boolean hasSpace()
     {
         if (c_index == array.length) 
@@ -66,6 +87,9 @@ public class IntArrayList
         return true;
     }
 
+    /**
+     * Resizes the array to double the original size. Runs at O(n).
+     */
     private void grow()
     {
         int[] newArray = new int[array.length * 2];
