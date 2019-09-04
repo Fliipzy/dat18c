@@ -5,7 +5,7 @@ package edu.dat18c.project_simulation;
  */
 public class SimulationOptions 
 {
-    private int iterationSleepTime = 0;
+    private long iterationSleepTime = 0;
     private float stopPercent = 1f;
     private boolean runUpdates = true;
     
@@ -19,12 +19,12 @@ public class SimulationOptions
     }
 
 
-    public int getIterationSleepTime() 
+    public long getIterationSleepTime() 
     {
         return iterationSleepTime;
     }
 
-    public void setIterationSleepTime(int iterationSleepTime)
+    public void setIterationSleepTime(long iterationSleepTime)
     {
         this.iterationSleepTime = iterationSleepTime;
     }

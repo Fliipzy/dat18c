@@ -24,22 +24,22 @@ public class Program
         phases.addAll(Arrays.asList(p1, p2, p3, p4, p5));
 
         //Route phases together
-        p1.addNextPhase(p2, 1f);
-        p2.addNextPhase(p3, 1.8f);
-        p2.addNextPhase(p1, 1.2f);
-        p3.addNextPhase(p4, 1.8f);
-        p3.addNextPhase(p3, 1.2f);
-        p4.addNextPhase(p5, 1.8f);
-        p4.addNextPhase(p1, 1.2f);
+        p1.addNextPhase(p2, 1.0);
+        p2.addNextPhase(p3, 0.8);
+        p2.addNextPhase(p1, 0.2);
+        p3.addNextPhase(p4, 0.8);
+        p3.addNextPhase(p3, 0.2);
+        p4.addNextPhase(p5, 0.8);
+        p4.addNextPhase(p1, 0.2);
 
         //Create project
         Project project = new Project("Project Simulation", phases);
 
         //Set simulation options
         SimulationOptions options = new SimulationOptions();
-        options.setIterationSleepTime(500);
+        options.setIterationSleepTime(200);
         options.setRunUpdates(true);
-        options.setStopPercent(0.99f);
+        options.setStopPercent(0.99999f);
 
         //Simulate project
         ProjectSimulation projectSimulation = new ProjectSimulation(project, options);
