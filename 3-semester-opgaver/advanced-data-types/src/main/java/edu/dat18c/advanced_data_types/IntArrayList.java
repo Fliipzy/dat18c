@@ -25,7 +25,7 @@ public class IntArrayList
      */
     public int get(int index)
     {
-        if (index > 0 && index <= array.length) 
+        if (index >= 0 && index <= array.length) 
         {
             return array[index];    
         }
