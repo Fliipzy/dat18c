@@ -8,10 +8,10 @@ public class Program
 {
     public static void main(String[] args)
     {
-        PersonFileReader personFileReader = new PersonFileReader(new File("src/main/resources/persons.txt"));
-        List<Person> persons = personFileReader.readFile();
+        //PersonFileReader personFileReader = new PersonFileReader(new File("src/main/resources/persons.txt"));
+        //List<Person> persons = personFileReader.readFile();
 
-        /*List<Person> persons = new ArrayList<Person>()
+        List<Person> persons = new ArrayList<Person>()
         {
             {
                 add(new Member("Fred", "110193-8888", false));
@@ -22,7 +22,7 @@ public class Program
                 add(new Instructor("Larman", "180758-1702", 20050, 15, "Object oriented strength training"));
                 add(new Instructor("Chad", "081176-1690", 19500, 10, "Spring gymnastics"));
             }
-        };*/
+        };
 
 
         StringBuilder sb = new StringBuilder();

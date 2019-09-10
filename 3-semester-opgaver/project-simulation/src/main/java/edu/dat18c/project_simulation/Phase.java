@@ -11,7 +11,7 @@ public class Phase
     private String name;
     private double currentPercent;
     private int iterationCost;
-    private Map<Phase, Float> nextPhases = new HashMap<Phase, Float>();
+    private Map<Phase, Double> nextPhases = new HashMap<Phase, Double>();
     
     public Phase(String name, int iterationCost) 
     {
@@ -19,12 +19,12 @@ public class Phase
         this.iterationCost = iterationCost;
     }
 
-    public void addNextPhase(Phase phase, Float percent)
+    public void addNextPhase(Phase phase, double percent)
     {
         this.nextPhases.put(phase, percent);
     }
 
-    public Map<Phase, Float> getNextPhases() 
+    public Map<Phase, Double> getNextPhases() 
     {
         return nextPhases;
     }

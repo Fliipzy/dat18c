@@ -23,59 +23,58 @@ public class ProjectSimulation
 
     public void start()
     {
-        StringBuilder sb = new StringBuilder();
-        int estimatedIterations = getEstimatedIterations();
-        long iterations = 0;
-        double finishedPercent = 0;
-        project.getStartPhase().setCurrentPercent(1);
+        int iterations = 0;
 
-        sb.append("=== STARTING " + project.getName() + " ===\n\n");
-        sb.append("Estimated finish time: " + (estimatedIterations == -1 ? "NEVER" :  estimatedIterations + " iterations"));
-        System.out.println(sb.toString());
+        project.getStartPhase().setCurrentPercent(1.0);
 
-        while (finishedPercent < options.getStopPercent()) 
+        while (project.getFinalPhase().getCurrentPercent() < options.getStopPercent())
         {
+            //print status
             for (Phase p : project.getPhases()) 
             {
-                if (p.getCurrentPercent() > 0) 
+                System.out.print(p.getName() + ": " + p.getCurrentPercent() + ", ");
+            }
+            System.out.println();
+
+            if (iterations == 10) 
+            {
+                break;    
+            }
+            for (Phase p : (Phase[])project.getPhases().stream().filter(o -> o.getCurrentPercent() > 0).toArray(Phase[]::new)) 
+            {
+                if (!p.equals(project.getFinalPhase())) 
                 {
-                    //If project is ready to progress to next phase
                     if (phaseCompletions.get(p).equals(p.getIterationCost())) 
                     {
-                        double splitPercentSum = 0;
-                        //Split resources to all phases
-                        for (Map.Entry<Phase, Float> next : p.getNextPhases().entrySet()) 
+                        for (Map.Entry<Phase, Double> link : p.getNextPhases().entrySet()) 
                         {
-                            double nextCurrentPercent = next.getKey().getCurrentPercent();
-                            double phaseSplitPercent = next.getValue();
-                            next.getKey().setCurrentPercent(p.getCurrentPercent() * phaseSplitPercent + nextCurrentPercent);
-
-                            splitPercentSum += phaseSplitPercent;
-                        }
-                        //reset phase iteration completeness
+                            double nextPhasePercent = link.getKey().getCurrentPercent(); 
+                            link.getKey().setCurrentPercent(nextPhasePercent + (p.getCurrentPercent() * link.getValue()));
+                        }    
                         phaseCompletions.replace(p, 0);
-                        p.setCurrentPercent(p.getCurrentPercent() - splitPercentSum);
+                        p.setCurrentPercent(0.0);
+                        continue;
                     }
-                    phaseCompletions.replace(p, phaseCompletions.get(p) + 1);
+                    phaseCompletions.replace(p, phaseCompletions.get(p) + 1); 
                 }
             }
-
-            //Simulate iteration time
-            if (options.getIterationSleepTime() != 0) 
+            try 
             {
-                try 
-                {
-                    Thread.sleep(options.getIterationSleepTime());
-                } 
-                catch (InterruptedException e) 
-                {
-                    e.printStackTrace();
-                }
+                Thread.sleep(options.getIterationSleepTime());
+            } 
+            catch (Exception e) 
+            {
+                //TODO: handle exception
             }
             iterations++;
         }
 
-        System.out.println(sb.toString());
+        //print status
+        for (Phase p : project.getPhases()) 
+        {
+            System.out.print(p.getName() + ": " + p.getCurrentPercent() + ", ");
+        }
+        System.out.println();
     }
 
     private int getEstimatedIterations()
@@ -85,7 +84,7 @@ public class ProjectSimulation
         for (Phase p : project.getPhases()) 
         {
             visited.add(Integer.toString(p.hashCode()));
-            for (Map.Entry<Phase, Float> entry : p.getNextPhases().entrySet()) 
+            for (Map.Entry<Phase, Double> entry : p.getNextPhases().entrySet()) 
             {
                 //Loop exists
                 if (visited.contains(entry.getKey().hashCode())); 
