@@ -14,7 +14,7 @@ public class Program
         ServerDialogue dialogue = null;
         VehicleCreator creator = new VehicleCreator();
         CommunicationLog log = new CommunicationLog();
-        
+
         //Connection loop
         Short port;
         System.out.print("What's the parking lot port number?\n");
