@@ -7,12 +7,9 @@ import edu.dat18c.chatapp.lib.client.interfaces.IChatClient;
 /**
  * IChatServer
  */
-public interface IChatServer<T extends IChatClient>
+public interface IChatServer 
 {
-    void start(short port);
+    void start();
     void close();
-    void addClient(T client);
-    void removeClient(T client);
-    boolean isStarted();
-    List<T> getClients();
+    List<IChatClient> getClients();
 }
