@@ -1,9 +1,7 @@
 package edu.dat18c.chatapp.lib.server;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import edu.dat18c.chatapp.lib.client.interfaces.IChatClient;
+import java.util.Vector;
+import edu.dat18c.chatapp.lib.client.ChatClientHandler;
 import edu.dat18c.chatapp.lib.server.interfaces.IChatServer;
 
 /**
@@ -11,25 +9,38 @@ import edu.dat18c.chatapp.lib.server.interfaces.IChatServer;
  */
 public class ChatServer implements IChatServer 
 {
+    private final int MAX_CLIENTS = 5; 
+
+    private static ChatServer instance;
+
     private int port;
-    private List<IChatClient> clients = new ArrayList<IChatClient>();
+    private Vector<ChatClientHandler> clients = new Vector<ChatClientHandler>();
+    private ChatServerHandler serverHandler;
+
+    private ChatServer()
+    { 
+    }
+
+    public static ChatServer getInstance()
+    {
+        if (instance == null) 
+        {
+            instance = new ChatServer();    
+        }
+        return instance;
+    }
 
     @Override
-    public void start() 
+    public void start(int port) 
     {
-
+        serverHandler = new ChatServerHandler(port);
+        serverHandler.start();
     }
 
     @Override
     public void close() 
     {
-
-    }
-
-    @Override
-    public List<IChatClient> getClients() 
-    {
-        return clients;
+        serverHandler.interrupt();
     }
 
     /**
