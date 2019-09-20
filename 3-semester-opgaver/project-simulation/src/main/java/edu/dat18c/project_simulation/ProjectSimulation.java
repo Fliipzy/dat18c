@@ -36,10 +36,11 @@ public class ProjectSimulation
             }
             System.out.println();
 
-            if (iterations == 10) 
+            if (iterations == 100) 
             {
-                break;    
+                break;
             }
+        
             for (Phase p : (Phase[])project.getPhases().stream().filter(o -> o.getCurrentPercent() > 0).toArray(Phase[]::new)) 
             {
                 if (!p.equals(project.getFinalPhase())) 

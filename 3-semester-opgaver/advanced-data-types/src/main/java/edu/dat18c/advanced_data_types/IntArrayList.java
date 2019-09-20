@@ -5,7 +5,7 @@ import java.util.Arrays;
 /**
  * IntArrayList
  */
-public class IntArrayList 
+public class IntArrayList implements Comparable<IntArrayList>
 {
     int c_index = 0; //Current index pointer in array
     int[] array; //The array we store the data in
@@ -118,4 +118,10 @@ public class IntArrayList
         sb.append("]");
         return sb.toString();
     }
+
+	@Override
+    public int compareTo(IntArrayList o) 
+    {
+		return this.array.length - o.array.length;
+	}
 }
