@@ -84,30 +84,18 @@ public class ChatClientHandler extends Thread
     private void handleJoinRequest(String[] tokens)
     {
         //If tokens contains JOIN, USERNAME, SERVER-IP, SERVER-PORT  
-        if (tokens.length == 4) 
+        if (tokens.length > 1) 
         {
             //If USERNAME token is 12 characters or less
-            if (tokens[1].length() <= 12) 
-            {
-                String j_ip = tokens[2];
-                int j_port = Integer.parseInt(tokens[3]);
-                
-                //If the tokens SERVER-IP & SERVER-PORT are correct
-                if (j_ip.equals(serverSocket.getInetAddress().getHostName()) && j_port == serverSocket.getLocalPort())
-                {
-                    clientUsername = tokens[1];
-                    authenticated = true;
-                    System.out.printf("User %s has joined the chat!\r\n", clientUsername);
-                    respond("J_OK");
-                }
-                else 
-                {
-                    respondError("IP address or port number was wrong!");
-                } 
+            if (tokens[1].length() > 12) 
+            {             
+                respondError("Username too long. Maximum length is 12 characters!");
             }
             else
             {
-                respondError("Username too long. Maximum length is 12 characters!");
+                clientUsername = tokens[1];
+                System.out.printf("User %s has joined the chat!\r\n", clientUsername);
+                respond("J_OK");
             }
         }
         else
