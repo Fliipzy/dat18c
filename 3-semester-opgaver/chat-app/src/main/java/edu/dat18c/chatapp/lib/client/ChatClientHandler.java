@@ -25,13 +25,21 @@ public class ChatClientHandler extends Thread
         this.chatClient = new ChatClient(clientSocket.getInetAddress());
     }
 
+    /**
+     * @return the input
+     */
+    public DataOutputStream getOutput() 
+    {
+        return output;
+    }
+
     @Override
     public void run() 
     {
         //Handle client requests
         while (!this.isInterrupted()) 
         {
-            try 
+            try
             {
                 //Receive request from client
                 String received = input.readLine(); 
@@ -51,7 +59,7 @@ public class ChatClientHandler extends Thread
                         handleJoinRequest(tokens);
                         break;
                     case "DATA":
-                        handleDataRequest(tokens);
+                        handleDataRequest(received);
                         break;
                     case "IMAV":
                         handleIMAVRequest(tokens);
@@ -80,7 +88,7 @@ public class ChatClientHandler extends Thread
         } 
         catch (IOException e) 
         {
-            System.out.println(e);
+            System.out.printf("Connection lost to %s\r\n", chatClient.getHostname());
         }
 
     }
@@ -123,11 +131,11 @@ public class ChatClientHandler extends Thread
         }
     }
         
-    private void handleDataRequest(String[] tokens)
+    private void handleDataRequest(String msg)
     {
         if (chatClient.getAuthenticated()) 
         {
-            
+            ChatServer.getInstance().broadcastToAll(chatClient, msg.substring(5));
         }
         else
         {
@@ -165,7 +173,7 @@ public class ChatClientHandler extends Thread
     {
         respond(String.format("J_ER %s", errorMessage));
     }
-        
+
     private void respond(String message)
     {
         try 

@@ -59,6 +59,21 @@ public class ChatServer implements IChatServer
         System.exit(0);    
     }
 
+    public void broadcastToAll(ChatClient fromClient, String msg)
+    {
+        for (ChatClientHandler clientHandler : clients.values()) 
+        {
+            try 
+            {
+                clientHandler.getOutput().write((fromClient.getUsername() + ": " + msg + "\r\n").getBytes());
+            } 
+            catch (Exception e) 
+            {
+                //TODO: handle exception
+            }
+        }
+    }
+
     public boolean addChatClient(ChatClient client, ChatClientHandler clientHandler)
     {
         if (clients.size() == MAX_CLIENTS)
