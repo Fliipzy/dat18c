@@ -9,4 +9,5 @@ public interface IChatServer
 {
     void start(int port);
     void close();
+    boolean isRunning();
 }

@@ -4,8 +4,8 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.ServerSocket;
 import java.net.Socket;
+import edu.dat18c.chatapp.lib.server.ChatServer;
 
 /**
  * ChatClientHandler
@@ -13,20 +13,16 @@ import java.net.Socket;
 public class ChatClientHandler extends Thread 
 {
     private Socket clientSocket;
-    private ServerSocket serverSocket;
     private DataOutputStream output;
     private BufferedReader input;
-    private String hostname;
-    private String clientUsername;
-    private boolean authenticated = false;
+    private ChatClient chatClient;
 
-    public ChatClientHandler(Socket clientSocket, ServerSocket serverSocket) throws IOException
+    public ChatClientHandler(Socket clientSocket) throws IOException
     {
         this.clientSocket = clientSocket;
-        this.serverSocket = serverSocket;
         this.output = new DataOutputStream(clientSocket.getOutputStream());
         this.input = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-        this.hostname = clientSocket.getInetAddress().getLocalHost().toString();
+        this.chatClient = new ChatClient(clientSocket.getInetAddress());
     }
 
     @Override
@@ -35,15 +31,22 @@ public class ChatClientHandler extends Thread
         //Handle client requests
         while (!this.isInterrupted()) 
         {
-           try 
-           {
-               //Receive request from client
-               String received = input.readLine(); 
-               String[] tokens = received.split("\\W | |:");
-            
-               //Handle request from client
-               switch (tokens[0]) 
-               {
+            try 
+            {
+                //Receive request from client
+                String received = input.readLine(); 
+                String[] tokens = received.split("\\W | |:");
+               
+                //If no tokens where received
+                if (tokens.length == 0) 
+                {
+                   handleUnknownCommand(received);
+                   continue;
+                }
+                
+                //Handle request from client
+                switch (tokens[0]) 
+                {
                     case "JOIN":
                         handleJoinRequest(tokens);
                         break;
@@ -59,17 +62,18 @@ public class ChatClientHandler extends Thread
                     case "HELP":
                         handleHelpRequest();
                         break;
-                   default:
+                    default:
                         handleUnknownCommand(tokens[0]);
                         break;
-               }
-           }
-           catch (Exception e)
-           {
-               System.out.printf("Connection lost to %s\r\n", hostname);
-               this.interrupt();
-           }
+                }
+            }
+            catch (IOException e)
+            {
+                System.out.printf("Connection lost to %s\r\n", chatClient.getHostname());
+                this.interrupt();
+            }
         }
+            
         try 
         {
             clientSocket.close();
@@ -78,11 +82,17 @@ public class ChatClientHandler extends Thread
         {
             System.out.println(e);
         }
-    }
 
-    
+    }
+        
     private void handleJoinRequest(String[] tokens)
     {
+        if (chatClient.getAuthenticated()) 
+        {
+            respondError("Already joined the chat!");
+            return;
+        }
+        
         //If tokens contains JOIN, USERNAME, SERVER-IP, SERVER-PORT  
         if (tokens.length > 1) 
         {
@@ -93,9 +103,18 @@ public class ChatClientHandler extends Thread
             }
             else
             {
-                clientUsername = tokens[1];
-                System.out.printf("User %s has joined the chat!\r\n", clientUsername);
-                respond("J_OK");
+                //If server has capacity for one more client
+                if (ChatServer.getInstance().addChatClient(chatClient, this)) 
+                {
+                    chatClient.setUsername(tokens[1]);
+                    chatClient.setAuthenticated(true);
+                    System.out.printf("User %s has joined the chat!\r\n", chatClient.getUsername());
+                    respond("J_OK");
+                }
+                else
+                {
+                    respondError("Server is full");
+                }
             }
         }
         else
@@ -103,19 +122,19 @@ public class ChatClientHandler extends Thread
             respondError("Missing information!");
         }
     }
-
+        
     private void handleDataRequest(String[] tokens)
     {
-        if (authenticated) 
+        if (chatClient.getAuthenticated()) 
         {
             
         }
         else
         {
-            respondError("'DATA' command requires client authentication. Authenticate by using JOIN command!");
+            respondError("'DATA' command requires authentication!");
         }
     }
-    
+        
     private void handleIMAVRequest(String[] tokens)
     {
         
@@ -123,40 +142,40 @@ public class ChatClientHandler extends Thread
     
     private void handleQuitRequest() throws IOException
     {
-        System.out.printf("%s disconnected from the server!\r\n", hostname);
+        System.out.printf("%s disconnected from the server!\r\n", chatClient.getHostname());
         this.interrupt();
-        this.clientSocket.close();
+        clientSocket.close();
     }
     
     private void handleUnknownCommand(String command)
     {
-        respondError(String.format("'%s' is not recognized as an command!", command));
+        respondError(String.format("'%s' is not recognized as a command!", command));
     }
-
+    
     private void handleHelpRequest()
     {
         respond("List of commands\r\n" +
-                "JOIN <<user_name>>, <<server_ip>>:<<server_port>>\r\n" +
-                "DATA <<user_name>>: <<message>>\r\n" + 
-                "IMAV\r\n" +
-                "QUIT");
+        "JOIN <<user_name>>, <<server_ip>>:<<server_port>>\r\n" +
+        "DATA <<user_name>>: <<message>>\r\n" + 
+        "IMAV\r\n" +
+        "QUIT");
     }
-
+    
     private void respondError(String errorMessage)
     {
         respond(String.format("J_ER %s", errorMessage));
     }
-
+        
     private void respond(String message)
     {
         try 
         {
             output.write((message + "\r\n").getBytes());
+            output.flush();
         } 
         catch (Exception e) 
         {
             System.out.println("I/O error occurred while writing to client!");
         }
     }
-    
 }
