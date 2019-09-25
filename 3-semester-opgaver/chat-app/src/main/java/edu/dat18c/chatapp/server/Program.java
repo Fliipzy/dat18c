@@ -8,9 +8,11 @@ import edu.dat18c.chatapp.lib.server.interfaces.IChatServer;
  */
 public class Program 
 {
+    private static IChatServer chatServer;
+
     public static void main(String[] args)
     {
-        IChatServer chatServer = ChatServer.getInstance();
+        chatServer = ChatServer.getInstance();
         chatServer.start(8080);
 
         while (chatServer.isRunning()) 
@@ -28,12 +30,25 @@ public class Program
             {
                 case "LIST":
                     break;
+
                 case "KICK":
+                    
+                    if (tokens.length > 1) 
+                    {
+                        handleKickCommand(tokens[0]);
+                    }
+                    else 
+                    {
+                        System.out.println("Missing username information. KICK <<username>>");
+                    }
                     break;
+
                 case "CLOSE":
+
                     System.out.println("Closing chat server...");
                     chatServer.close();
                     break;
+
                 default:
                     handleUnkownCommandError(tokens[0]);
                     break;
@@ -41,8 +56,13 @@ public class Program
         }
     }
 
-    public static void handleUnkownCommandError(String cmd)
+    private static void handleUnkownCommandError(String command)
     {
-        System.out.println(String.format("'%s' was not recognized as a command!", cmd));
+        System.out.println(String.format("'%s' was not recognized as a command!", command));
+    }
+
+    private static void handleKickCommand(String username)
+    {
+        
     }
 }

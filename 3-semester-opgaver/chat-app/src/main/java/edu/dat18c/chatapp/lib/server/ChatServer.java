@@ -19,9 +19,7 @@ public class ChatServer implements IChatServer
     private ChatServerHandler serverHandler;
     private Map<ChatClient, ChatClientHandler> clients = new HashMap<ChatClient, ChatClientHandler>();  
 
-    private ChatServer()
-    { 
-    }
+    private ChatServer() {}
 
     public static ChatServer getInstance()
     {
@@ -32,9 +30,6 @@ public class ChatServer implements IChatServer
         return instance;
     }
 
-    /**
-     * @return the server port
-     */
     public int getPort() 
     {
         return port;
@@ -63,14 +58,7 @@ public class ChatServer implements IChatServer
     {
         for (ChatClientHandler clientHandler : clients.values()) 
         {
-            try 
-            {
-                clientHandler.getOutput().write((fromClient.getUsername() + ": " + msg + "\r\n").getBytes());
-            } 
-            catch (Exception e) 
-            {
-                //TODO: handle exception
-            }
+            clientHandler.respond(fromClient.getUsername() + ": " + msg + "\r\n");
         }
     }
 
@@ -81,6 +69,11 @@ public class ChatServer implements IChatServer
             return false;    
         }
         clients.put(client, clientHandler);
+        return true;
+    }
+
+    public boolean kickChatClient(ChatClientHandler clientHandler)
+    {
         return true;
     }
 

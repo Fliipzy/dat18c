@@ -169,12 +169,12 @@ public class ChatClientHandler extends Thread
         "QUIT");
     }
     
-    private void respondError(String errorMessage)
+    public void respondError(String errorMessage)
     {
         respond(String.format("J_ER %s", errorMessage));
     }
 
-    private void respond(String message)
+    public void respond(String message)
     {
         try 
         {

@@ -41,7 +41,7 @@ public class ChatServerHandler extends Thread
         {
             try 
             {
-                //Listen for and accept new client sockets, then start a new clientHandler thread 
+                //Listen for and accept new client sockets. Then start a new clientHandler thread. 
                 Socket clientSocket = serverSocket.accept();
                 System.out.println("Client connected to server from " + clientSocket.getInetAddress().getLocalHost());
                 ChatClientHandler clientHandler = new ChatClientHandler(clientSocket);
