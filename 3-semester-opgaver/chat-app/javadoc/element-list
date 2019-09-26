@@ -1,0 +1,5 @@
+edu.dat18c.chatapp.client
+edu.dat18c.chatapp.lib.client
+edu.dat18c.chatapp.lib.server
+edu.dat18c.chatapp.lib.server.interfaces
+edu.dat18c.chatapp.server

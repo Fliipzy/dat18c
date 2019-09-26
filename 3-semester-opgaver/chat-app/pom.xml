@@ -4,6 +4,10 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
+  <configuration>
+      <sourcepath>src/main/java</sourcepath>
+  </configuration>
+
   <groupId>edu.dat18c.chatapp</groupId>
   <artifactId>chat-app</artifactId>
   <version>1.0</version>

@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"edu.dat18c.chatapp.client"},{"l":"edu.dat18c.chatapp.lib.client"},{"l":"edu.dat18c.chatapp.lib.server"},{"l":"edu.dat18c.chatapp.lib.server.interfaces"},{"l":"edu.dat18c.chatapp.server"}]
