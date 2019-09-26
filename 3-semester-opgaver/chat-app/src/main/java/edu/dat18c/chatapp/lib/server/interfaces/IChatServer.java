@@ -4,6 +4,7 @@ import java.util.List;
 
 /**
  * IChatServer
+ * @author Frederik Lundbeck Jørgensen
  */
 public interface IChatServer 
 {
