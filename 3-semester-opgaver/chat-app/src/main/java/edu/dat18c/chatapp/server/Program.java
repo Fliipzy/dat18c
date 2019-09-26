@@ -4,7 +4,8 @@ import edu.dat18c.chatapp.lib.server.ChatServer;
 import edu.dat18c.chatapp.lib.server.interfaces.IChatServer;
 
 /**
- * Program
+ * This server side program starts the {@code ChatServer}.
+ * @author Frederik Lundbeck Jørgensen
  */
 public class Program 
 {

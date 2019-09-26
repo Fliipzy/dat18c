@@ -5,10 +5,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.util.Stack;
 
 /**
- * Program
+ * This client side program
+ * @author Frederik Lundbeck Jørgensen
  */
 public class Program 
 {
@@ -19,110 +19,155 @@ public class Program
     private static String serverAddress;
     private static int serverPort;
 
-    private static Stack<String> msgStack = new Stack<String>();
-
     public static void main(String[] args) 
     {
         boolean connected = false;
+        boolean running = true;
 
-        //Make sure the socket is connected to server before continuing to chat loop.
-        while (true) 
+        //While client app is running
+        while(running)
         {
-            printHeader("FRED-CHAT © 2019, v1.0", 1);
+            clearScreenWIN();
 
-            serverAddress = System.console().readLine("Connect to chat server:\n\n" + "Server-IP:\t");
-
-            //Make sure given port number can be passed to an integer.
-            serverPort = readIntegerInput("Server-PORT:\t", "Server-PORT must be an integer value.");
-        
-            //Try to connect socket to server
-            try 
+            //Make sure the socket is connected to server before continuing to chat loop.
+            while (true) 
             {
-                socket = new Socket(InetAddress.getByName(serverAddress), serverPort);
-                serverInput = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                connected = true;
-                break; //Connection was succesful! Now breaking out of the connection loop.
-            }
-            catch (IOException e) 
-            {
-                System.out.println("Could not connect to chat server!\n" +
-                                   "Try connecting again? y/n");
-
-                //Make sure user decides whether to try again or quit.
-                while (true) 
+                printHeader("FRED-CHAT © 2019, v1.0", 1);
+    
+                serverAddress = System.console().readLine("Connect to chat server:\n\n" + "Server-IP:\t");
+    
+                //Make sure given port number can be passed to an integer.
+                serverPort = readIntegerInput("Server-PORT:\t", "Server-PORT must be an integer value.");
+            
+                //Try to connect socket to server
+                try 
                 {
-                    String answer = System.console().readLine();
-
-                    if (answer.equalsIgnoreCase("y")) 
+                    socket = new Socket(InetAddress.getByName(serverAddress), serverPort);
+                    serverInput = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                    connected = true;
+                    break; //Connection was succesful! Now breaking out of the connection loop.
+                }
+                catch (IOException e) 
+                {
+                    System.out.println("Could not connect to chat server!\n" +
+                                       "Try connecting again? y/n");
+    
+                    //Make sure user decides whether to try again or quit.
+                    while (true) 
                     {
-                        clearScreenWIN();
-                        break;
-                    }
-                    else if (answer.equalsIgnoreCase("n"))
-                    {
-                        System.exit(0);
-                    }
-                    else 
-                    {
-                        System.out.println("Try connecting again? y/n");
+                        String answer = System.console().readLine();
+    
+                        if (answer.equalsIgnoreCase("y")) 
+                        {
+                            clearScreenWIN();
+                            break;
+                        }
+                        else if (answer.equalsIgnoreCase("n"))
+                        {
+                            System.exit(0);
+                        }
+                        else 
+                        {
+                            System.out.println("Try connecting again? y/n");
+                        }
                     }
                 }
             }
-        }
-        //If socket has a connection, we enter the connection loop.
-        while (connected) 
-        {
-            clearScreenWIN();
-            printHeader(String.format("Connected To [%s]", serverAddress), 1);
-            
-            printConnectedMenu();
-
-            int opCode = readIntegerInput("Operation: ");
-
-            switch (opCode) 
+            //If socket has a connection, we enter the connection loop.
+            while (connected) 
             {
-                case 1:
-
-                    clearScreenWIN();
-                    printHeader(String.format("Joining [%s] Chat", serverAddress), 1);
-                    //Start JOIN loop
-                    String username = readUsername(USERNAME_MAX_CHAR);
-
-                    //Send JOIN request to server
-                    String response = communicateWithServer("JOIN " + username);
-
-                    if (response != null) 
-                    {
-                        String[] responseTokens = response.split(" ");
-                        //Go into chat loop
-                        if (responseTokens[0].equals("J_OK")) 
+                clearScreenWIN();
+                printHeader(String.format("Connected To [%s]", serverAddress), 1);
+                
+                printConnectedMenu();
+    
+                int opCode = readIntegerInput("Operation: ");
+    
+                switch (opCode) 
+                {
+                    case 1:
+    
+                        clearScreenWIN();
+                        printHeader(String.format("Joining [%s] Chat", serverAddress), 1);
+    
+                        //Start JOIN loop
+                        String username = readUsername(USERNAME_MAX_CHAR);
+                        //Send JOIN request to server
+                        String response = communicateWithServer("JOIN " + username);
+    
+                        if (response != null) 
                         {
-                            //Clear screen and update header
-                            clearScreenWIN();
-                            printHeader(String.format("[%s] Chat", serverAddress), 1);
-
-                            String msg = "";
-                            //Stay in chat loop until command is ':quit'.
-                            while (!msg.equalsIgnoreCase(":quit")) 
+                            String[] responseTokens = response.split(" ");
+                            //Go into chat loop
+                            if (responseTokens[0].equals("J_OK"))
                             {
-                               
-                                //TODO: Handle chat
-                                
-                                msg = System.console().readLine("Message: ");
+                                //Clear screen and update header
                                 clearScreenWIN();
                                 printHeader(String.format("[%s] Chat", serverAddress), 1);
-                            }    
-                        }
-                    }
+    
+                                //Start chat listener thread
+                                ChatListener chatListener = new ChatListener(socket);
+                                chatListener.start();
+    
+                                //Stay in chat loop until command is ':quit'.
+                                while (true) 
+                                {
+                                   String msg = System.console().readLine();
 
-                    break;
-                case 2:
-                    System.exit(0);
-                    break;
-                default:
-                    break;
+                                   //If user wants to quit chat room
+                                   if (msg.equalsIgnoreCase(":quit")) 
+                                   {
+                                       System.out.println("Exiting chat..");
+                                       try 
+                                       {
+                                           //Stop chat listener thread
+                                           socket.getOutputStream().write(("QUIT" + " \r\n").getBytes());
+                                           socket.shutdownInput();
+                                           chatListener.interrupt();
+                                       } 
+                                       catch (IOException e) 
+                                       {
+                                           System.out.println("Error occurred while exiting chat!");
+                                       }
+                                       break;    
+                                   }
+                                   else
+                                   {
+                                       //Try writing message to server
+                                       try 
+                                       {
+                                           socket.getOutputStream().write(("DATA " + msg + "\r\n").getBytes());
+                                       } 
+                                       catch (IOException e) 
+                                       {
+                                           System.out.println("Error occurred while trying to communicate with server!");
+                                       }
+                                   }
+                                }    
+                            }
+                        }
+                        break;
+                    case 2:
+
+                        try 
+                        {
+                            socket.close();
+                            connected = false;
+                        } 
+                        catch (IOException e) 
+                        {
+                            System.out.println("Error occurred while disconnecting from server!");
+                        }
+
+                        break;
+                    case 3:
+                        System.exit(0);
+                    default:
+                        break;
+                }
             }
         }
+
     }
     
     public static void printHeader(String headerTitle, int bottomPad)
@@ -148,7 +193,8 @@ public class Program
     {
         StringBuilder sb = new StringBuilder();
         sb.append("[1] JOIN CHAT\n");
-        sb.append("[2] QUIT\n");
+        sb.append("[2] DISCONNECT\n");
+        sb.append("[3] QUIT\n");
         System.out.println(sb.toString());
     }
 
@@ -157,6 +203,7 @@ public class Program
         try 
         {
             socket.getOutputStream().write((output + "\r\n").getBytes());
+            socket.getOutputStream().flush();
             return serverInput.readLine();
         } 
         catch (IOException e) 
