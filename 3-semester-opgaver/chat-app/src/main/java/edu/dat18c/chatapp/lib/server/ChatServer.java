@@ -1,9 +1,14 @@
 package edu.dat18c.chatapp.lib.server;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import edu.dat18c.chatapp.lib.client.ChatClient;
 import edu.dat18c.chatapp.lib.client.ChatClientHandler;
+import edu.dat18c.chatapp.lib.logging.interfaces.ILog;
+import edu.dat18c.chatapp.lib.logging.interfaces.ILogUpdate;
+import edu.dat18c.chatapp.lib.logging.interfaces.ILoggable;
 import edu.dat18c.chatapp.lib.server.interfaces.IChatServer;
 
 /**
@@ -13,7 +18,7 @@ import edu.dat18c.chatapp.lib.server.interfaces.IChatServer;
  * @author Frederik Lundbeck Jørgensen
  * @see https://www.tutorialspoint.com/design_pattern/singleton_pattern.htm
  */
-public class ChatServer implements IChatServer 
+public class ChatServer implements IChatServer, ILoggable
 {
     /** The maximum number of clients allowed on the server at the same time. */
     private final int MAX_CLIENTS = 5; 
@@ -28,6 +33,8 @@ public class ChatServer implements IChatServer
     private ChatServerHandler serverHandler;
     /** The map in which all the connected clients are stored. */
     private Map<ChatClient, ChatClientHandler> clients = new HashMap<ChatClient, ChatClientHandler>();  
+
+    private List<ILog> logs = new ArrayList<ILog>();
 
     private ChatServer() {}
 
@@ -124,5 +131,26 @@ public class ChatServer implements IChatServer
         clients.remove(client);
         System.out.println(String.format("Removed %s from client list", client.getUsername()));
         return true;
+    }
+
+    @Override
+    public void addLog(ILog l) 
+    {
+        logs.add(l);
+    }
+
+    @Override
+    public void removeLog(ILog l) 
+    {
+        logs.remove(l);
+    }
+
+    @Override
+    public void notifyLogs(ILogUpdate update) 
+    {
+        for (ILog log : logs) 
+        {
+            log.update(update);
+        }
     }
 }
